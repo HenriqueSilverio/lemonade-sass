@@ -1,0 +1,132 @@
+/*
+*
+* Lemonade v1.1
+* Copyright 2013, Joe Richardson
+* lemonade.im
+* Free to use under the MIT license.
+* http://www.opensource.org/licenses/mit-license.php
+*
+* Forked to Sass by Henrique Silvério
+*
+*/
+
+// compass
+@import "compass";
+
+// Settings
+$full-width: 100%;
+$total-bits: 12;
+
+// frame/box styles (optional)
+@import "styles";
+
+// Basic reset
+*,
+*:after,
+*:before {
+	margin: 0;
+	padding: 0;
+	// Removes padding behavior on widths
+	@include box-sizing("border-box");
+}
+
+// Attribute selector
+[class*='bit-'] {
+	float: left;
+	padding: 0.3em;
+}
+
+// Floats last ".bit-" to the right
+[class*='bit-']:last-of-type {
+	padding-right: 0.3em;
+	float: right;
+}
+
+/* Alternative for IE8  */
+.last-type {
+	padding: 0.3em; 
+	float: right;
+}
+
+// Clearfix
+.frame:after {
+	@include pie-clearfix();
+}
+
+// Main Widths
+@for $i from 1 through $total-bits {
+	.bit-#{$i} {
+		width: 100 / $i + 0%;
+	}
+}
+
+// Custom Widths
+@mixin create-bit($bit-size: 75) {
+	.bit-#{$bit-size} {
+		width: ($bit-size / 100) * 100%;
+	}	
+}
+
+@include create-bit;
+
+// Landscape mobile & down
+@media screen and (max-width: 30em) {
+	%full-width {
+		width: $full-width;
+	}
+
+	@for $i from 1 through $total-bits {
+		.bit-#{$i} {
+			@extend %full-width;
+		}
+	}
+
+	.frame .bit-4:nth-child(2) {
+		float: right;
+	}
+
+	.frame .bit-4:nth-child(3) {
+		clear: both;
+		float: left;
+	}
+
+	.frame .bit-4:nth-child(4) {
+		float: right;
+	}
+}
+
+// Portrait tablet to landscape
+@media (min-width: 30em) and (max-width: 50em) {
+	.bit-4,
+	.bit-6,
+	.bit-8,
+	.bit-10,
+	.bit-12 {
+		width: $full-width / 2;
+	}
+
+	.bit-1,
+	.bit-2,
+	.bit-3,
+	.bit-5,
+	.bit-7,
+	.bit-9,
+	.bit-11 {
+		width: $full-width;
+	}
+}
+
+// Landscape to small desktop
+@media (min-width: 50em) and (max-width: 68.750em) {
+	.bit-2,
+	.bit-7 {
+		width: $full-width;
+	}
+
+	.bit-4,
+	.bit-8,
+	.bit-10,
+	.bit-12 {
+		width: $full-width / 2;
+	}
+}
